@@ -91,17 +91,10 @@ Die wichtigste Datei ist `config/settings.json`:
 
 ## 📸 Screenshots
 
-![Repo Übersicht](screenshots/repo-overview.png)
-*Übersicht des AI Email Assistant Repos*
+### n8n Workflow
 
-![Workflow Preview](screenshots/workflow-preview.png)
-*n8n Workflow-Templates für die E-Mail-Verarbeitung*
-
-![Prompts Preview](screenshots/prompts-preview.png)
-*KI-Prompt-Templates für E-Mail-Klassifizierung und Antwortgenerierung*
-
-![Setup Guide](screenshots/setup-guide.png)
-*Schritt-für-Schritt Einrichtungsanleitung in der Dokumentation*
+![n8n Workflow](screenshots/n8n-workflow.png)
+*Der AI Email Assistant Workflow in n8n — IMAP-Trigger, KI-Analyse, automatische Routing-Logik*
 
 ## 🗺️ Roadmap
 
