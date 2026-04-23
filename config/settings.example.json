@@ -1,0 +1,29 @@
+{
+  "imap": {
+    "host": "imap.example.com",
+    "port": 993,
+    "secure": true,
+    "user": "deine@email.de",
+    "password": "DEIN_IMAP_PASSWORT",
+    "folder": "INBOX",
+    "pollInterval": 300
+  },
+  "claude": {
+    "model": "claude-3-5-sonnet-20241022",
+    "maxTokens": 2048,
+    "temperature": 0.3
+  },
+  "filtering": {
+    "minPriority": "normal",
+    "excludeDomains": [
+      "newsletter.example.com",
+      "noreply.example.com"
+    ],
+    "maxEmailsPerRun": 20
+  },
+  "slack": {
+    "enabled": true,
+    "channel": "#email-assistant",
+    "notifyHighPriority": true
+  }
+}

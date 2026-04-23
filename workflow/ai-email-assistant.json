@@ -1,0 +1,132 @@
+{
+  "name": "AI Email Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "host": "imap.example.com",
+        "port": 993,
+        "secure": true,
+        "user": "={{ $credentials.imapUser }}",
+        "password": "={{ $credentials.imapPassword }}"
+      },
+      "id": "imap-trigger",
+      "name": "E-Mail abrufen",
+      "type": "n8n-nodes-base.emailTrigger",
+      "typeVersion": 1.1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.from }}",
+              "operation": "notContains",
+              "value2": "newsletter"
+            }
+          ]
+        }
+      },
+      "id": "filter-node",
+      "name": "Filter: Keine Newsletter",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "prompt": "={{ $('Prompt: Zusammenfassung').item.json.prompt }}\n\nE-Mail von: {{$json.from}}\nBetreff: {{$json.subject}}\nDatum: {{$json.date}}\n\nInhalt:\n{{$json.text}}",
+        "model": "claude-3-5-sonnet-20241022",
+        "options": {}
+      },
+      "id": "claude-summary",
+      "name": "Claude: Zusammenfassen",
+      "type": "@anthropic-ai/anthropic",
+      "typeVersion": 1,
+      "position": [700, 200],
+      "credentials": { "anthropicApi": { "id": "CLAUDE_CREDENTIAL_ID", "name": "Claude API" } }
+    },
+    {
+      "parameters": {
+        "prompt": "={{ $('Prompt: Antwort').item.json.prompt }}\n\nE-Mail von: {{$json.from}}\nBetreff: {{$json.subject}}\n\nZusammenfassung: {{$node['Claude: Zusammenfassen'].json.message.content[0].text}}",
+        "model": "claude-3-5-sonnet-20241022",
+        "options": {}
+      },
+      "id": "claude-response",
+      "name": "Claude: Antwort-Entwurf",
+      "type": "@anthropic-ai/anthropic",
+      "typeVersion": 1,
+      "position": [700, 400],
+      "credentials": { "anthropicApi": { "id": "CLAUDE_CREDENTIAL_ID", "name": "Claude API" } }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            { "name": "absender", "value": "={{ $json.from }}" },
+            { "name": "betreff", "value": "={{ $json.subject }}" },
+            { "name": "zusammenfassung", "value": "={{ $('Claude: Zusammenfassen').json.message.content[0].text }}" },
+            { "name": "antwortEntwurf", "value": "={{ $('Claude: Antwort-Entwurf').json.message.content[0].text }}" }
+          ]
+        }
+      },
+      "id": "template-builder",
+      "name": "Template zusammenstellen",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [940, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#email-assistant",
+        "text": "📧 Neue E-Mail:\n*Von:* {{$json.absender}}\n*Betreff:* {{$json.betreff}}\n\n*Zusammenfassung:*\n{{$json.zusammenfassung}}\n\n*Antwort-Entwurf:*\n{{$json.antwortEntwurf}}"
+      },
+      "id": "slack-notify",
+      "name": "An Slack senden",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [1180, 300],
+      "credentials": { "slackApi": { "id": "SLACK_CREDENTIAL_ID", "name": "Slack API" } }
+    },
+    {
+      "parameters": { "key": "prompt", "value": "Du bist ein professioneller E-Mail-Assistent für ein deutsches KMU.\n\nAufgabe: Fasse die folgende E-Mail präzise zusammen.\n\nFormat:\n📌 KERNPUNKT: [Hauptanliegen in einem Satz]\n📋 DETAILS:\n- [Detail 1]\n- [Detail 2]\n⏰ DRINGLICHKEIT: [hoch/mittel/niedrig]\n💡 HANDLUNGSEMPFEHLUNG: [Was sollte getan werden?]" },
+      "id": "prompt-summary",
+      "name": "Prompt: Zusammenfassung",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [220, 120]
+    },
+    {
+      "parameters": { "key": "prompt", "value": "Du bist ein professioneller E-Mail-Assistent für ein deutsches KMU.\n\nAufgabe: Erstelle einen Antwortentwurf auf die zusammengefasste E-Mail.\n\nRegeln:\n- Professioneller, freundlicher Ton\n- Auf Deutsch\n- Höfliche Grußformel\n- Klare Antworten auf alle Punkte\n- Bei Unklarheiten: Rückfrage formulieren\n\nFormat:\nSehr geehrte(r) [Anrede],\n\n[Antworttext]\n\nMit freundlichen Grüßen\n[Dein Unternehmen]" },
+      "id": "prompt-response",
+      "name": "Prompt: Antwort",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [220, 480]
+    }
+  ],
+  "connections": {
+    "Prompt: Zusammenfassung": { "main": [[{ "node": "Claude: Zusammenfassen", "type": "main", "index": 0 }]] },
+    "Prompt: Antwort": { "main": [[{ "node": "Claude: Antwort-Entwurf", "type": "main", "index": 0 }]] },
+    "E-Mail abrufen": { "main": [[{ "node": "Filter: Keine Newsletter", "type": "main", "index": 0 }]] },
+    "Filter: Keine Newsletter": {
+      "main": [
+        [
+          { "node": "Claude: Zusammenfassen", "type": "main", "index": 0 },
+          { "node": "Claude: Antwort-Entwurf", "type": "main", "index": 0 }
+        ],
+        []
+      ]
+    },
+    "Claude: Zusammenfassen": { "main": [[{ "node": "Template zusammenstellen", "type": "main", "index": 0 }]] },
+    "Claude: Antwort-Entwurf": { "main": [[{ "node": "Template zusammenstellen", "type": "main", "index": 0 }]] },
+    "Template zusammenstellen": { "main": [[{ "node": "An Slack senden", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-23T00:00:00.000Z",
+  "versionId": "1"
+}
