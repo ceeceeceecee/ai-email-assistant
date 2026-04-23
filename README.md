@@ -16,22 +16,22 @@ AI-powered email assistant: summarize, draft responses, categorize — GDPR-comp
 ### n8n Workflow
 
 ![n8n Workflow](screenshots/n8n-workflow.png)
-*Kompletter E-Mail-Verarbeitungs-Workflow in n8n — IMAP → Claude → Slack → Gmail.*
+*Kompletter E-Mail-Verarbeitungs-Workflow in n8n — IMAP → Claude AI → Slack. 7 Nodes, darunter zwei Claude AI Nodes für Zusammenfassung und Antwort-Generierung.*
 
-### Workflow Detail
+### Claude API Response
 
-![Workflow Detail](screenshots/workflow-preview.png)
-*E-Mail-Verarbeitung: Fetch → AI Summary → Classification → Slack Notification → Draft Response.*
+![Claude Response](screenshots/claude-response.png)
+*Beispielhafte Claude API Antwort: E-Mail wird analysiert, zusammengefasst, priorisiert und eine professionelle Antwort wird vorgeschlagen — alles in unter 2 Sekunden.*
 
-### Setup Guide
+### E-Mail Zusammenfassung — Strukturierte Ausgabe
 
-![Setup Guide](screenshots/setup-guide.png)
-*Schritt-für-Schritt Einrichtung in der n8n-UI.*
+![Email Summary Output](screenshots/email-summary-output.png)
+*Side-by-Side Ansicht: Original E-Mail (links) und KI-Zusammenfassung (rechts) mit Priorität, Kategorie und empfohlener Antwort.*
 
-### Claude Prompts
+### Setup & Running
 
-![Prompts](screenshots/prompts-preview.png)
-*Anpassbare System-Prompts für Zusammenfassung und Antwort-Generierung.*
+![Setup Running](screenshots/setup-running.png)
+*Docker Compose Start: Alle Services (n8n, Redis, Claude API) starten in Sekunden. Batch-Verarbeitung von 3 E-Mails in 4.2s.*
 
 ---
 
