@@ -121,6 +121,10 @@ Siehe [docs/setup-guide.md](docs/setup-guide.md) für die vollständige Anleitun
 
 ---
 
+
+## 👤 Autor
+
+**Cela** — Freelancer für digitale Verwaltungslösungen
 ## Lizenz
 
 [MIT](LICENSE) — frei nutzbar.
