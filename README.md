@@ -49,29 +49,40 @@ AI-powered email assistant: summarize, draft responses, categorize — GDPR-comp
 
 ---
 
-## Quick Start
-
-```bash
-# 1. Repo klonen
-git clone https://github.com/ceeceeceecee/ai-email-assistant.git
-cd ai-email-assistant
-
-# 2. Konfiguration
-cp config/settings.example.json config/settings.json
-# API-Keys & IMAP-Zugang eintragen
-
-# 3. Starten
-docker compose up -d
-```
-
-Siehe [docs/setup-guide.md](docs/setup-guide.md) für die vollständige Anleitung.
+## 🚀 Schnellstart
 
 ### Voraussetzungen
 
-- Docker & Docker Compose
-- Claude API Key ([anthropic.com](https://anthropic.com))
-- IMAP-Zugang (E-Mail-Postfach)
-- (Optional) Slack Workspace
+| Komponente | Version | Zweck |
+|---|---|---|
+| Docker & Docker Compose | 20.10+ / 2.0+ | Container-Deployment |
+| Claude API Key | aktuell | KI-E-Mail-Analyse |
+| IMAP-Zugang | — | E-Mail-Postfach |
+| n8n | neueste | Workflow-Engine |
+| Slack (optional) | — | Benachrichtigungen |
+
+### Installation
+
+```bash
+git clone https://github.com/ceeceeceecee/ai-email-assistant.git
+cd ai-email-assistant
+
+# Konfiguration kopieren und anpassen
+cp config/settings.example.json config/settings.json
+# API-Keys & IMAP-Zugang eintragen
+
+# Services starten
+docker compose up -d
+```
+
+### Erste Schritte
+
+1. **n8n öffnen** (Standard: `http://localhost:5678`) und Workflows importieren
+2. **E-Mail-Verbindung** in n8n konfigurieren (IMAP-Zugangsdaten)
+3. **Test-E-Mail** senden und KI-Zusammenfassung prüfen
+4. **Slack-Integration** (optional) für Benachrichtigungen einrichten
+
+Siehe [docs/setup-guide.md](docs/setup-guide.md) für die vollständige Anleitung.
 
 ---
 
