@@ -1,7 +1,6 @@
 # Ai Email Assistant
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/ceeceeceecee/ai-document-analyzer/main/docs/coletrading-banner.svg" alt="ColeTrading" width="600">
 </p>
 
 ![n8n](https://img.shields.io/badge/n8n-Workflow-FF6D5A?logo=n8n) ![Claude](https://img.shields.io/badge/Claude-AI Engine-9945FF?logo=anthropic) ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker) ![License](https://img.shields.io/badge/License-MIT-blue) ![DSGVO](https://img.shields.io/badge/DSGVO-Konform-brightgreen)
@@ -66,5 +65,4 @@ Beiträge sind willkommen! Bitte erstelle einen Issue oder Pull Request.
 MIT License — siehe [LICENSE](LICENSE).
 
 <p align="center">
-<a href="https://github.com/ceeceeceecee">ColeTrading</a> &bull; DSGVO-konform &bull; Self-Hosted &bull; Open Source
 </p>
